@@ -6,10 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Bounce : MonoBehaviour
 {
-    public float speed = 0.012f;
-    public float force = 15;
-    public float RForce = 15;
-    public float jForce = 700;
+    public float speed = 5f;
+    public float force = 800;
+    public float RForce = 800;
+    public float jForce = 800;
     public Rigidbody rb;
     public int jumpCount = 0;
     public Material mat1, mat2;
@@ -28,39 +28,39 @@ public class Bounce : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.position += Vector3.up * 0.001f * force;
+        //gameObject.transform.position += Vector3.up * 0.01f * force * Time.deltaTime;
 
-        if (force >= 0)
+        //if (force >= 0)
         {
-            force -= 0.02f;
+            force -= 100f * Time.deltaTime;
         }
 
-       //if (Input.GetKey(KeyCode.W))
+       if (Input.GetKey(KeyCode.W))
         {
-            gameObject.transform.position += Vector3.forward * speed;
+            gameObject.transform.position += Vector3.forward * speed * Time.deltaTime;
         }
          
 
         if (Input.GetKey(KeyCode.A))
         {
-            gameObject.transform.position += Vector3.left * speed;
+            gameObject.transform.position += Vector3.left * speed * Time.deltaTime;
         }
 
 
-        //if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
         {
-            gameObject.transform.position += Vector3.back * speed;
+            gameObject.transform.position += Vector3.back * speed * Time.deltaTime;
         }
 
 
         if (Input.GetKey(KeyCode.D))
         {
-            gameObject.transform.position += Vector3.right * speed;
+            gameObject.transform.position += Vector3.right * speed * Time.deltaTime;
         }
 
         if (jumpCount == 1 && Input.GetKeyDown(KeyCode.Space))
         {
-            rb.AddForce(transform.up * jForce);
+            rb.AddForce(Vector3.up * 20f * jForce * Time.deltaTime);
 
             jumpCount -= 1;
 
@@ -79,11 +79,12 @@ public class Bounce : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Double"))
         {
             force = RForce;
+            rb.AddForce(Vector3.up * 20f * force * Time.deltaTime);
         }
 
         if (collision.gameObject.CompareTag("Die"))
         {
-            transform.position = new Vector3(0, 1, 0);
+            transform.position = new Vector3(0, 1.5f, 0);
 
             jumpCount = 0;
 
